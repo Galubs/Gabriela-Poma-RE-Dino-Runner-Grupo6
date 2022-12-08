@@ -1,9 +1,11 @@
 import pygame
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, HEART_COUNT, HEART
 from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.obstacle.obstacleManager import ObstacleManager
 from dino_runner.components.score_menu.text_utils import *  #el asterisco significa importar todo lo que contiene el archivo
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
+#from dino_runner.components.player_hearts.heart import Heart
+from dino_runner.components.powerups.power_up_manager import PowerUpManager
 
 class Game:
     def __init__(self):
@@ -26,6 +28,9 @@ class Game:
     def run(self):      
         self.obstacle_manager.reset_obstacles(self)
         self.player_heart_manager.reset_hearts
+        self.points = 0
+        self.power_up_manager.reset_power_ups(self.points)
+        
         self.playing = True
         while self.playing:         ## GAME LOOP: events, update, draw
             self.events()
@@ -43,6 +48,7 @@ class Game:
         user_input = pygame.key.get_pressed()   #para que python nos ayude a reconocer que esta presionando el usuarios
         self.player.update(user_input) 
         self.obstacle_manager.update(self) 
+        self.power_up_manager.update(self.points, self.game_speed, self.player)
 
     def draw(self):
         self.clock.tick(FPS) #tick es un funcion, que es un contador.
@@ -52,6 +58,7 @@ class Game:
         self.obstacle_manager.draw(self.screen)
         self.score()
         self.player_heart_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
         pygame.display.update() #update, para que la pantalla se vaya actualizando
         pygame.display.flip()   #nos va a ayudar a que se muestre de forma correcta los elementos actualizados en nuestra pantalla
 
@@ -76,7 +83,7 @@ class Game:
     def show_menu(self):
         self.running = True
 
-        white_color = (255,255 , 255)
+        white_color = (255, 255, 255)
         self.screen.fill(white_color)
 
         self.print_menu_elements(self.death_count)
@@ -108,4 +115,11 @@ class Game:
                 exit()
             if event.type == pygame.KEYDOWN:
                 self.run()
+
+    def restart_heart(self):
+        while HEART_COUNT == 0:
+            self.heart_count = HEART_COUNT
+            self.playing = True
+            break
+        PlayerHeartManager.draw
 
