@@ -4,7 +4,6 @@ from dino_runner.components.dinosaur.dinosaur import Dinosaur
 from dino_runner.components.obstacle.obstacleManager import ObstacleManager
 from dino_runner.components.score_menu.text_utils import *  #el asterisco significa importar todo lo que contiene el archivo
 from dino_runner.components.player_hearts.player_heart_manager import PlayerHeartManager
-#from dino_runner.components.player_hearts.heart import Heart
 from dino_runner.components.powerups.power_up_manager import PowerUpManager
 
 class Game:
@@ -24,13 +23,14 @@ class Game:
         self.running = True
         self.death_count = 0    
         self.player_heart_manager = PlayerHeartManager()
+        self.power_up_manager = PowerUpManager()
 
     def run(self):      
         self.obstacle_manager.reset_obstacles(self)
-        self.player_heart_manager.reset_hearts
         self.points = 0
+        self.game_speed = 20
         self.power_up_manager.reset_power_ups(self.points)
-        
+        self.player_heart_manager.reset_heart()
         self.playing = True
         while self.playing:         ## GAME LOOP: events, update, draw
             self.events()
@@ -41,7 +41,7 @@ class Game:
     def events(self):           
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.plying = False
+                self.playing = False
                 self.running = False
 
     def update(self):       ##ira actualizando segun lo qe el usuario va presionando
@@ -79,6 +79,10 @@ class Game:
 
         score, score_rect = get_score_element(self.points)
         self.screen.blit(score, score_rect)
+        self.player.check_invincibility(self.screen)
+
+    def game_over(self):
+        pass
 
     def show_menu(self):
         self.running = True
@@ -116,10 +120,4 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 self.run()
 
-    def restart_heart(self):
-        while HEART_COUNT == 0:
-            self.heart_count = HEART_COUNT
-            self.playing = True
-            break
-        PlayerHeartManager.draw
 

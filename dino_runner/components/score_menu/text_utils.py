@@ -20,3 +20,11 @@ def get_centered_message(message, width = SCREEN_WIDTH // 2, height = SCREEN_HEI
     text_rect = text.get_rect()
     text_rect.center = (width, height)
     return text, text_rect
+
+def get_death_count(number_death_count):
+    font = pygame.font.Font(FONT_STYLE, 20)
+
+    text = font.render('Number death: ' + str(number_death_count), True, black_color)
+    text_rect = text.get_rect()
+    text_rect.center = (1000, 40)
+    return text, text_rect

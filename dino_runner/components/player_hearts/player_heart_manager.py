@@ -17,6 +17,6 @@ class PlayerHeartManager:
             heart.draw(screen)
             x_position += 30
 
-    def reset_hearts(self):
+    def reset_heart(self):
         self.heart_count = HEART_COUNT
-
+        

@@ -6,5 +6,3 @@ if __name__ == "__main__":
      while game.running:
           if not game.playing:
                game.show_menu()
-               game.restart_heart()
-     
